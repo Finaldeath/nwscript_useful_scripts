@@ -44,6 +44,10 @@ int HexStringToInt(string sString);
 // * nInteger - integer to transform
 string IntToBinaryString(int nInteger);
 
+// Converts an RGB value to a decimal integer
+// Useful for using RGB inputs with things like SetFogColor()
+int RGBToDecimal(int nRed, int nGreen, int nBlue);
+
 // Returns TRUE if the given string is really a zero "0" string, and not something like
 // a empty string, or "00" or similar that StringToInt doesn't inherantly capture.
 int IsStringReallyZero(string s);
@@ -129,6 +133,13 @@ string IntToBinaryString(int nInteger)
         nInteger >>= 1;
     }
     return sResult;
+}
+
+// Converts an RGB value to a decimal integer
+// Useful for using RGB inputs with things like SetFogColor()
+int RGBToDecimal(int nRed, int nGreen, int nBlue)
+{
+    return ((clamp(nRed, 0, 255) * 65536) + (clamp(nGreen, 0, 255) * 256) + clamp(nBlue, 0, 255));
 }
 
 // Returns TRUE if the given string is really a zero "0" string, and not something like

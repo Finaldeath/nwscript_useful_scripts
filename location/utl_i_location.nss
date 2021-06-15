@@ -61,6 +61,14 @@ location GetRandomCircleLocation(location lBase, float fDistance = 1.0);
 // Includes rotating additional location based on facing of the first
 location AddLocationToLocation(location lMaster, location lAdd);
 
+// Gets the center vector of a tile from a position anywhere in that tile.
+// * vPosition - A vector within area bounds
+vector GetCenterOfTileFromPosition(vector vPosition);
+
+// Gets the tile index of an area from a position anywhere in that tile
+// * oArea - The area to get a tile index within
+// * vPosition - A position within the bounds of oArea
+int GetTileIndexFromPosition(object oArea, vector vPosition);
 
 
 // Get a local vector (variable prefixed VEC:)
@@ -247,4 +255,33 @@ location AddLocationToLocation(location lMaster, location lAdd)
 
     // Return the final location
     return Location(GetAreaFromLocation(lMaster), vNew, fNew);
+}
+
+// Gets the center vector of a tile from a position anywhere in that tile
+// * vPosition - A vector within area bounds
+vector GetCenterOfTileFromPosition(vector vPosition)
+{
+    int nX = FloatToInt(vPosition.x);
+    int nY = FloatToInt(vPosition.y);
+
+    nX -= nX % 10 - (10 / 2);
+    nY -= nY % 10 - (10 / 2);
+
+    return Vector(IntToFloat(nX), IntToFloat(nY), vPosition.z);
+}
+
+// Gets the tile index of an area from a position anywhere in that tile
+// * oArea - The area to get a tile index within
+// * vPosition - A position within the bounds of oArea
+int GetTileIndexFromPosition(object oArea, vector vPosition)
+{
+    int nX = FloatToInt(vPosition.x);
+    int nY = FloatToInt(vPosition.y);
+
+    // Get tile grid coordinates from vPosition
+    nX = (nX - nX % 10) / 10;
+    nY = (nY - nY % 10) / 10;
+
+    // Return the tile index
+    return (nY * GetAreaSize(AREA_HEIGHT, oArea)) + nX;
 }
